@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure 3 — Failure-Mode Cascade</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #F8F5EF;
+    color: #1A2A3A;
+    padding: 48px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    border-bottom: 1.5px solid #1A2A3A;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .header h1 { font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; }
+  .header span { font-size: 10px; color: #6B7F8A; }
+
+  /* ── Title ── */
+  .fig-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #1A2A3A; }
+  .fig-subtitle { font-size: 13px; color: #4A6070; margin-bottom: 32px; font-style: italic; }
+
+  /* ── Flowchart ── */
+  .flowchart {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+  }
+
+  .flow-row.center-row {
+    justify-content: center;
+  }
+
+  /* ── Gate box ── */
+  .gate {
+    background: #FFFFFF;
+    border: 1.5px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 14px 16px;
+    min-width: 180px;
+    max-width: 200px;
+    flex-shrink: 0;
+  }
+
+  .gate.fail   { border-color: #922B21; border-width: 1.5px; }
+  .gate.partial { border-color: #B7770D; border-width: 1.5px; }
+  .gate.pass   { border-color: #1E6B3C; border-width: 1.5px; }
+  .gate.unknown { border-color: #7A9BB5; border-width: 1.5px; }
+
+  .gate-label {
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 6px;
+  }
+
+  .gate-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 5px;
+  }
+
+  .gate-detail {
+    font-size: 10px;
+    color: #4A6070;
+    line-height: 1.5;
+    font-family: 'Courier New', monospace;
+  }
+
+  .gate-threshold {
+    font-size: 10px;
+    color: #2E3E50;
+    margin-top: 5px;
+    font-weight: 600;
+  }
+
+  /* ── Outcome badge ── */
+  .outcome {
+    display: inline-block;
+    font-size: 8.5px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 1px;
+    margin-top: 7px;
+  }
+
+  .outcome-fail   { background: #C0392B; color: #F8F5EF; }
+  .outcome-partial { background: #D4720A; color: #F8F5EF; }
+  .outcome-pass   { background: #1E6B3C; color: #F8F5EF; }
+  .outcome-fdr    { background: #1A4880; color: #F8F5EF; }
+
+  /* ── Arrow connector ── */
+  .connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    flex-shrink: 0;
+    min-width: 40px;
+  }
+
+  .connector-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .arrow-h {
+    font-size: 20px;
+    color: #7A9BB5;
+  }
+
+  .arrow-v {
+    font-size: 18px;
+    color: #7A9BB5;
+    line-height: 1;
+    padding: 2px 0;
+  }
+
+  /* ── Vertical branch row ── */
+  .branch-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding-left: 60px;
+    position: relative;
+  }
+
+  .branch-row::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #C8CDD2;
+  }
+
+  /* ── Final outcome box ── */
+  .final-box {
+    background: #1A2A3A;
+    color: #F8F5EF;
+    border-radius: 2px;
+    padding: 18px 24px;
+    min-width: 260px;
+    max-width: 320px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .final-label {
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #A8BCC9;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 8px;
+  }
+
+  .final-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #F8F5EF;
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .final-sub {
+    font-size: 10.5px;
+    color: #A8BCC9;
+    line-height: 1.6;
+  }
+
+  /* ── H4b subtree ── */
+  .h4b-section {
+    background: #F0EDE8;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 18px 22px;
+    margin-top: 20px;
+  }
+
+  .h4b-header {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 12px;
+  }
+
+  .h4b-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .h4b-gate {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 1px;
+    padding: 10px 14px;
+    min-width: 150px;
+    max-width: 190px;
+  }
+
+  .h4b-arrow {
+    font-size: 18px;
+    color: #7A9BB5;
+    padding: 0 6px;
+  }
+
+  .h4b-outcome {
+    background: #1A4880;
+    color: #F8F5EF;
+    padding: 10px 16px;
+    border-radius: 1px;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 220px;
+    text-align: center;
+  }
+
+  /* ── Legend ── */
+  .fig-note {
+    border-top: 1px solid #C8CDD2;
+    padding-top: 14px;
+    margin-top: 8px;
+  }
+  .fig-note p { font-size: 10.5px; line-height: 1.65; color: #4A6070; }
+  .fig-note strong { color: #1A2A3A; font-weight: 600; }
+
+  .color-key {
+    display: flex;
+    gap: 16px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .color-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: #4A6070;
+  }
+  .color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 1px;
+  }
+  .dot-fail   { background: #C0392B; }
+  .dot-partial { background: #D4720A; }
+  .dot-pass   { background: #1E6B3C; }
+  .dot-fdr    { background: #1A4880; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Briefings in Bioinformatics — Figure 3</h1>
+  <span>LEMP A Failure-Mode Cascade</span>
+</div>
+
+<!-- TITLE -->
+<div class="fig-title">Failure-Mode Cascade in the LEMPA Worked Example</div>
+<div class="fig-subtitle">How deconvolution disagreement propagated through target definition to the final line classification</div>
+
+<!-- MAIN FLOWCHART -->
+<div class="flowchart">
+
+  <!-- Row 1: G2 partial -->
+  <div class="flow-row center-row">
+    <div class="gate partial">
+      <div class="gate-label">Gate 2 — Agreement</div>
+      <div class="gate-name">G2 PARTIAL</div>
+      <div class="gate-detail">
+        NNLS-only consensus reached.<br>
+        scaden did not converge to comparable cell-type fractions.
+      </div>
+      <div class="gate-threshold">Cross-method agreement required</div>
+      <div class="outcome outcome-partial">PARTIAL · insufficient for comparison</div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line">
+        <span class="arrow-h">→</span>
+      </div>
+    </div>
+
+    <div class="gate fail">
+      <div class="gate-label">Gate 5 — Cell-type Correlation</div>
+      <div class="gate-name">G5 FAIL</div>
+      <div class="gate-detail">
+        Pre-specified HCA-radiomics<br>
+        correlation gate: r ≥ 0.30
+      </div>
+      <div class="gate-threshold">3 / 50 cell types passed</div>
+      <div class="outcome outcome-fail">FAIL · 94% cell types below threshold</div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line">
+        <span class="arrow-h">→</span>
+      </div>
+    </div>
+
+    <div class="gate fail">
+      <div class="gate-label">B3 — Module Collapse</div>
+      <div class="gate-name">50 → 4 Modules</div>
+      <div class="gate-detail">
+        Target fidelity reduced.<br>
+        Cell-type surface abandoned<br>
+        for broad module proxy.
+      </div>
+      <div class="gate-threshold">4 collapsed modules</div>
+      <div class="outcome outcome-fail">FAIL · original target lost</div>
+    </div>
+  </div>
+
+  <!-- Vertical connector -->
+  <div style="display:flex;justify-content:center;padding:6px 0;">
+    <div style="display:flex;flex-direction:column;align-items:center;color:#7A9BB5;font-size:18px;">↓</div>
+  </div>
+
+  <!-- Row 2: B3 pooled CV + H4b -->
+  <div class="flow-row center-row">
+
+    <!-- B3 pooled CV -->
+    <div style="display:flex;flex-direction:column;gap:16px;align-items:center;">
+
+      <div class="gate fail">
+        <div class="gate-label">B3 — Pooled Module CV</div>
+        <div class="gate-name">1 / 4 Modules Pass</div>
+        <div class="gate-detail">
+          Endothelial module: r = 0.343<br>
+          Epithelial / Immune / Stromal<br>
+          all failed pooled threshold
+        </div>
+        <div class="gate-threshold">r ≥ 0.30 per module</div>
+        <div class="outcome outcome-fail">3 / 4 FAIL · B3 collapse confirmed</div>
+      </div>
+
+      <!-- H4b sidebar -->
+      <div class="gate unknown" style="min-width:180px;">
+        <div class="gate-label">H4a / H4c</div>
+        <div class="gate-name">Null</div>
+        <div class="gate-detail">
+          H4a null · H4c null<br>
+          No supportive evidence at<br>
+          original cell-type surface
+        </div>
+        <div class="outcome outcome-fail" style="background:#7A9BB5;">NULL</div>
+      </div>
+
+    </div>
+
+    <!-- Arrow to V2 final -->
+    <div class="connector">
+      <div class="connector-line">
+        <span class="arrow-h">→</span>
+      </div>
+    </div>
+
+    <!-- H4b pass -->
+    <div class="gate pass" style="border-color:#1A4880;">
+      <div class="gate-label">H4b — Fallback Remainder</div>
+      <div class="gate-name">V2-G6 PASS (Caveated)</div>
+      <div class="gate-detail">
+        Entropy FDR = 3.93e-05<br>
+        Contrast FDR = 1.93e-04<br>
+        Homogeneity FDR = 6.04e-05
+      </div>
+      <div class="gate-threshold">FDR &lt; 0.05 within 4-module target</div>
+      <div class="outcome outcome-fdr">FDR PASS · target redefined</div>
+    </div>
+
+    <!-- Arrow to final -->
+    <div class="connector">
+      <div class="connector-line">
+        <span class="arrow-h">→</span>
+      </div>
+    </div>
+
+    <!-- Final outcome -->
+    <div class="final-box">
+      <div class="final-label">Line-Level Outcome</div>
+      <div class="final-title">METHOD-FRAGILE NEGATIVE</div>
+      <div class="final-sub">
+        V2 redesign analyzable but failed<br>
+        intended agreement gate · fallback H4b<br>
+        survives as caveated remainder ·<br>
+        line-level negative stands
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- H4b detail section -->
+<div class="h4b-section">
+  <div class="h4b-header">H4b Caveated Remainder — Fallback Target Definition</div>
+  <div class="h4b-flow">
+
+    <div class="h4b-gate">
+      <div class="gate-label">V1 H4b</div>
+      <div class="gate-name">High-resolution target</div>
+      <div class="gate-detail" style="font-size:10px;">
+        Weighted-capacity heterogeneity<br>
+        across 50 cell types · FDR not<br>
+        significant after correction
+      </div>
+      <div class="outcome outcome-fail">V1 null</div>
+    </div>
+
+    <span class="h4b-arrow">→</span>
+
+    <div class="h4b-gate">
+      <div class="gate-label">V2 H4b</div>
+      <div class="gate-name">Fallback target</div>
+      <div class="gate-detail" style="font-size:10px;">
+        Heterogeneity variance computed<br>
+        from 4 collapsed consensus modules<br>
+        instead of 50 cell types
+      </div>
+      <div class="outcome outcome-partial">Target redefined</div>
+    </div>
+
+    <span class="h4b-arrow">→</span>
+
+    <div class="h4b-gate">
+      <div class="gate-label">FDR values</div>
+      <div class="gate-name">Reproducible signal</div>
+      <div class="gate-detail" style="font-size:10px;">
+        Entropy 3.93e-05<br>
+        Contrast 1.93e-04<br>
+        Homogeneity 6.04e-05
+      </div>
+      <div class="outcome outcome-pass">FDR &lt; 0.05</div>
+    </div>
+
+    <span class="h4b-arrow">→</span>
+
+    <div class="h4b-outcome">
+      H4b survives as texture-vs-heterogeneity<br>
+      association inside negative line ·<br>
+      target redefinition is the critical caveat
+    </div>
+
+  </div>
+</div>
+
+<!-- COLOR KEY -->
+<div class="color-key">
+  <div class="color-item"><div class="color-dot dot-fail"></div>FAIL — gate threshold not met</div>
+  <div class="color-item"><div class="color-dot dot-partial"></div>PARTIAL — insufficient but not absent</div>
+  <div class="color-item"><div class="color-dot dot-pass"></div>PASS (caveated) — FDR met under fallback target</div>
+  <div class="color-item"><div class="color-dot dot-fdr"></div>FDR significance — association present but target changed</div>
+</div>
+
+<!-- LEGEND -->
+<div class="fig-note">
+  <p>
+    <strong>Figure 3.</strong> Failure-mode cascade in the LEMPA worked example. G2 PARTIAL indicates that only NNLS reached consensus, preventing cross-method comparison. G5 FAIL shows that the pre-specified correlation gate (r ≥ 0.30) was met by only 3 of 50 cell types. B3 collapse marks the forced reduction from 50 cell types to four broad modules, after which pooled cross-validation passed only the endothelial module (r = 0.343). H4b survived as a caveated remainder (FDR < 0.05) but required a fallback target definition, and its evidence remains subordinate to the negative line-level conclusion. V2 = second validation redesign. FDR = Benjamini-Hochberg false discovery rate.
+  </p>
+</div>
+
+</body>
+</html>

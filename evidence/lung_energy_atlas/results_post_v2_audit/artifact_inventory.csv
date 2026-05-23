@@ -1,0 +1,12 @@
+artifact,exists,size_bytes,mtime_local,sha256,role_in_decision
+results/v1/V1_FINAL_SUMMARY.md,yes,4423,2026-05-21T20:50:25+09:00,101a0d7721df1e8f151407f23ef2c9e27527450da8d8ffa4e8e42428a5d6df67,V1 final classification and V1 gate summary
+results/v1/hypothesis_tests.csv,yes,1405,2026-05-21T20:49:44+09:00,d17c4900bab75df35cdfcc028a57690faba192f2206e4adf2f540ba26d237d0a,V1 H4a/H4b/H4c outcome table
+results/v1/cv_metrics_per_celltype.csv,yes,14593,2026-05-21T15:34:51+09:00,865d295696a35e21e786b6f864d34dcf17a80afff3f34edbbff515c12278ffc4,V1 B3 per-cell-type CV evidence
+results/v1/b3_sensitivity_abundance_restricted.md,yes,2587,2026-05-21T22:31:14+09:00,e33ed3e6f63fd8b0dd36b5263b268cc2e4c0c8daa5cafe3bc3e24ff7de04e408,Exploratory V1 sensitivity framing and rare-cell interpretation
+results/deconvolution/multi_method_attempt_v2.md,yes,3305,2026-05-21T22:53:32+09:00,9ed82c9bbf77b617cb8cd32ccabe72c13049b921c90685805e1c10c6a0acf734,V1-era secondary-method failure and method-dependence evidence
+results/v2_preflight/v2_executability_decision.md,yes,4500,2026-05-22T07:42:20+09:00,991e246a6d9888871cbb87a212eca2b0e3dc7acfb61841da4536f7e14ddea9ec,Preflight classification and feasibility basis entering V2
+results/v2/V2_FINAL_SUMMARY.md,yes,4859,2026-05-22T11:31:59+09:00,7f560bf2ecf4c83e97ba762612d0786ab488eca31c8e8c00f0f0b0cd39230a9b,Final V2 classification and gate table
+results/v2/multi_method_attempt_v3.md,yes,5541,2026-05-22T11:23:22+09:00,726df85960cb99ddb81724c65c015aa56552a1de61a21ea2904ec8f8e8b27908,V2-G2 failure and module-collapse trigger evidence
+results/v2/b3_v2_intra_v1_cross_source.md,yes,2225,2026-05-22T11:27:11+09:00,0ca6d0d0631eb698ee5f4515f794e06a141edab28d13ffa4b15d52f8c03c9bf2,V2-G4 failure and V2-G5 omission evidence
+results/v2/b4_v2_hypothesis_tests.csv,yes,990,2026-05-22T11:26:49+09:00,a19b4e94f07895e13fef99d3a59aab2df20c8e087e373f4b9c55ed8c13071b6f,V2 H4-family results including retained H4b signal
+results/v2/intra_v1_stratification_feasibility.md,yes,5772,2026-05-22T10:46:52+09:00,099bb2aeac93f4b08bd1f8dbae50562e0fb9d87c9476b72f6e99663bae1edf1a,Feasibility basis for V2-G5 skipped status

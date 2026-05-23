@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure 4 — Practitioner Decision Tree</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #F8F5EF;
+    color: #1A2A3A;
+    padding: 48px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    border-bottom: 1.5px solid #1A2A3A;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .header h1 { font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; }
+  .header span { font-size: 10px; color: #6B7F8A; }
+
+  /* ── Title ── */
+  .fig-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; color: #1A2A3A; }
+  .fig-subtitle { font-size: 13px; color: #4A6070; margin-bottom: 32px; font-style: italic; }
+
+  /* ── Decision tree layout ── */
+  .tree {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+
+  .tree-level {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .tree-level .step-card {
+    background: #FFFFFF;
+    border: 1.5px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 16px 20px;
+    min-width: 200px;
+    max-width: 240px;
+    flex-shrink: 0;
+  }
+
+  .step-label {
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 6px;
+  }
+
+  .step-question {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .step-detail {
+    font-size: 10.5px;
+    color: #4A6070;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+
+  /* ── Branch buttons ── */
+  .branches {
+    display: flex;
+    gap: 8px;
+  }
+
+  .branch-btn {
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    padding: 4px 10px;
+    border-radius: 1px;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    cursor: default;
+  }
+
+  .branch-yes {
+    background: #1E6B3C;
+    color: #F8F5EF;
+  }
+
+  .branch-no {
+    background: #C0392B;
+    color: #F8F5EF;
+  }
+
+  /* ── Connector arrows ── */
+  .connector-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px;
+    flex-shrink: 0;
+  }
+
+  .branch-label {
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    color: #8A9EAF;
+    padding: 2px 0;
+  }
+
+  .arrow-down {
+    font-size: 18px;
+    color: #7A9BB5;
+    padding: 2px 0;
+  }
+
+  .connector-h {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .arrow-right {
+    font-size: 20px;
+    color: #7A9BB5;
+  }
+
+  /* ── Sub-paths (YES / NO branches) ── */
+  .branch-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .branch-row::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 24px;
+    bottom: 24px;
+    width: 1px;
+    background: #C8CDD2;
+  }
+
+  /* ── Endpoint boxes ── */
+  .endpoint {
+    background: #F8F5EF;
+    border: 1.5px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 12px 16px;
+    min-width: 160px;
+    max-width: 190px;
+    flex-shrink: 0;
+  }
+
+  .endpoint-label {
+    font-size: 8.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 5px;
+  }
+
+  .endpoint-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 4px;
+  }
+
+  .endpoint-detail {
+    font-size: 10px;
+    color: #4A6070;
+    line-height: 1.5;
+  }
+
+  .endpoint-tag {
+    display: inline-block;
+    font-size: 8.5px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.07em;
+    padding: 2px 7px;
+    border-radius: 1px;
+    margin-top: 6px;
+  }
+
+  .tag-continue  { background: #1E6B3C; color: #F8F5EF; }
+  .tag-collapse  { background: #D4720A; color: #F8F5EF; }
+  .tag-defer     { background: #1A4880; color: #F8F5EF; }
+  .tag-archive   { background: #7A9BB5; color: #F8F5EF; }
+  .tag-caveat    { background: #B7770D; color: #F8F5EF; }
+
+  /* ── LEMPA callout nodes ── */
+  .lempa-tag {
+    background: #1A2A3A;
+    color: #F8F5EF;
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 1px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── Practitioner checklist ── */
+  .checklist {
+    background: #1A2A3A;
+    color: #F8F5EF;
+    border-radius: 2px;
+    padding: 22px 26px;
+    margin-top: 8px;
+  }
+
+  .checklist-header {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #A8BCC9;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 14px;
+  }
+
+  .checklist-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #F8F5EF;
+    margin-bottom: 18px;
+  }
+
+  .checklist-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 28px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 11px;
+    color: #D4DFE8;
+    line-height: 1.55;
+  }
+
+  .check-num {
+    background: #3A5A72;
+    color: #F8F5EF;
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    width: 18px;
+    height: 18px;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  /* ── Legend ── */
+  .fig-note {
+    border-top: 1px solid #C8CDD2;
+    padding-top: 14px;
+    margin-top: 8px;
+  }
+  .fig-note p { font-size: 10.5px; line-height: 1.65; color: #4A6070; }
+  .fig-note strong { color: #1A2A3A; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Briefings in Bioinformatics — Figure 4</h1>
+  <span>Practitioner Decision Tree — Atlas-Guided Radiogenomics</span>
+</div>
+
+<!-- TITLE -->
+<div class="fig-title">Practitioner Decision Tree for Atlas-Guided Radiogenomics</div>
+<div class="fig-subtitle">Five decision nodes for study design, gatekeeping, and failure handling</div>
+
+<!-- DECISION TREE -->
+<div class="tree">
+
+  <!-- STEP 1 -->
+  <div class="tree-level" style="margin-bottom:10px;">
+    <div class="step-card">
+      <div class="step-label">Decision Node 1</div>
+      <div class="step-question">External cohort with paired RNA-seq + imaging available?</div>
+      <div class="step-detail">
+        Paired bulk transcriptome + medical imaging with patient-level linkage. Unpaired or single-modality cohorts cannot support radiogenomic validation.
+      </div>
+      <div class="branches">
+        <span class="branch-btn branch-yes">YES →</span>
+        <span class="branch-btn branch-no">NO →</span>
+      </div>
+    </div>
+
+    <div class="connector-col">
+      <span class="branch-label">YES</span>
+      <span class="arrow-down">↓</span>
+      <span class="branch-label">NO</span>
+    </div>
+
+    <div class="endpoint" style="margin-right:8px;">
+      <div class="endpoint-label">Path A</div>
+      <div class="endpoint-name">Proceed to Node 2</div>
+      <div class="endpoint-detail">Cohort linkage is the minimum prerequisite</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-label">Path B</div>
+      <div class="endpoint-name">Archive Line</div>
+      <div class="endpoint-detail">No validation surface exists without paired data. Do not proceed without cohort pairing.</div>
+      <div class="endpoint-tag tag-archive">ARCHIVE</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="tree-level" style="margin-bottom:10px;">
+    <div class="step-card" style="opacity:0.35;pointer-events:none;">
+      <div class="step-label">Decision Node 2</div>
+      <div class="step-question">Is reference atlas directly applicable to your tissue?</div>
+      <div class="step-detail">
+        HCA/Sikkema or equivalent organ-specific atlas must map to the disease tissue type. Cross-organ projection is not validated.
+      </div>
+      <div class="branches">
+        <span class="branch-btn branch-yes">YES →</span>
+        <span class="branch-btn branch-no">NO →</span>
+      </div>
+    </div>
+
+    <div class="connector-col">
+      <span class="branch-label">YES</span>
+      <span class="arrow-down">↓</span>
+      <span class="branch-label">NO</span>
+    </div>
+
+    <div class="endpoint" style="margin-right:8px;">
+      <div class="endpoint-label">Path A</div>
+      <div class="endpoint-name">Proceed to Node 3</div>
+      <div class="endpoint-detail">Atlas relevance confirmed for disease tissue</div>
+      <div class="endpoint-tag tag-continue">CONTINUE</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-label">Path B</div>
+      <div class="endpoint-name">Collapse to generic signatures</div>
+      <div class="endpoint-detail">Organ-mismatched atlas targets are unreliable. Use tissue-agnostic alternatives if needed.</div>
+      <div class="endpoint-tag tag-collapse">COLLAPSE TARGETS</div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="tree-level" style="margin-bottom:10px;">
+    <div class="step-card">
+      <div class="step-label">Decision Node 3</div>
+      <div class="step-question">Is cross-method agreement achievable? <span class="lempa-tag">LEMPA: G2 PARTIAL</span></div>
+      <div class="step-detail">
+        Run NNLS and scaden (or equivalent alternative) in parallel. Require top-10 median agreement ≥ 0.0 before interpreting any predictive result. If agreement fails, do not proceed to single-method predictions.
+      </div>
+      <div class="branches">
+        <span class="branch-btn branch-yes">YES →</span>
+        <span class="branch-btn branch-no">NO →</span>
+      </div>
+    </div>
+
+    <div class="connector-col">
+      <span class="branch-label">YES</span>
+      <span class="arrow-down">↓</span>
+      <span class="branch-label">NO</span>
+    </div>
+
+    <div class="endpoint" style="margin-right:8px;">
+      <div class="endpoint-label">Path A</div>
+      <div class="endpoint-name">Proceed to Node 4</div>
+      <div class="endpoint-detail">Agreement confirms stable target surface</div>
+      <div class="endpoint-tag tag-continue">CONTINUE</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-label">Path B</div>
+      <div class="endpoint-name">Collapse targets to modules</div>
+      <div class="endpoint-detail">
+        50 cell types → 4 broad modules. LEMPA: only endothelial module passed (r=0.343). Other modules failed.
+      </div>
+      <div class="endpoint-tag tag-collapse">COLLAPSE + DEFER</div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="tree-level" style="margin-bottom:10px;">
+    <div class="step-card">
+      <div class="step-label">Decision Node 4</div>
+      <div class="step-question">Is sample size sufficient for module-level CV? <span class="lempa-tag">LEMPA: N=130</span></div>
+      <div class="step-detail">
+        Minimum N ≥ 100 for module-level cross-validated association testing. Below this threshold, pooled CV estimates are unreliable and CI width is uninformative.
+      </div>
+      <div class="branches">
+        <span class="branch-btn branch-yes">YES →</span>
+        <span class="branch-btn branch-no">NO →</span>
+      </div>
+    </div>
+
+    <div class="connector-col">
+      <span class="branch-label">YES</span>
+      <span class="arrow-down">↓</span>
+      <span class="branch-label">NO</span>
+    </div>
+
+    <div class="endpoint" style="margin-right:8px;">
+      <div class="endpoint-label">Path A</div>
+      <div class="endpoint-name">Proceed to Node 5</div>
+      <div class="endpoint-detail">Sample size supports module-level CV</div>
+      <div class="endpoint-tag tag-continue">CONTINUE</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-label">Path B</div>
+      <div class="endpoint-name">Defer Validation</div>
+      <div class="endpoint-detail">Insufficient N for module-level claims. Await larger paired cohort before interpretation.</div>
+      <div class="endpoint-tag tag-defer">DEFER</div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="tree-level" style="margin-bottom:0px;">
+    <div class="step-card" style="border-color:#B7770D;">
+      <div class="step-label">Decision Node 5 — Pre-Specification Gate</div>
+      <div class="step-question">Does pooled CV reach pre-specified threshold? <span class="lempa-tag">LEMPA: r ≥ 0.30 · 1/4 pass</span></div>
+      <div class="step-detail">
+        Pre-specify r ≥ 0.30 as minimum module-level CV threshold. Plan for failure: define fallback hypothesis (e.g., residual H4b-type association) before running analysis. Do not retrofit success after seeing results.
+      </div>
+      <div class="branches">
+        <span class="branch-btn branch-yes">YES →</span>
+        <span class="branch-btn branch-no">NO →</span>
+      </div>
+    </div>
+
+    <div class="connector-col">
+      <span class="branch-label">YES</span>
+      <span class="arrow-down">↓</span>
+      <span class="branch-label">NO</span>
+    </div>
+
+    <div class="endpoint" style="margin-right:8px;">
+      <div class="endpoint-label">Path A</div>
+      <div class="endpoint-name">Line-Level PASS</div>
+      <div class="endpoint-detail">Validation target met at module surface. Report with full CV metrics and robustness surface.</div>
+      <div class="endpoint-tag tag-continue">POSITIVE LINE</div>
+    </div>
+
+    <div class="endpoint">
+      <div class="endpoint-label">Path B</div>
+      <div class="endpoint-name">Report Method-Fragile Negative</div>
+      <div class="endpoint-detail">
+        LEMPA: only H4b texture signal survived (FDR=3.93e-05) under fallback target. This is reportable only with full caveat disclosure. Line remains negative.
+      </div>
+      <div class="endpoint-tag tag-caveat">NEGATIVE + CAVEAT</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRACTITIONER CHECKLIST -->
+<div class="checklist">
+  <div class="checklist-header">Practitioner Checklist — Atlas-Guided Radiogenomics</div>
+  <div class="checklist-title">5 Action Items Before Running Your Paired Analysis</div>
+  <div class="checklist-items">
+
+    <div class="check-item">
+      <div class="check-num">1</div>
+      <div>
+        <strong>Freeze validation gates before data exploration.</strong>
+        Pre-specify agreement threshold (e.g., median r ≥ 0.0), correlation gate (e.g., r ≥ 0.30), and robustness expectations. Record in analysis plan before paired data exploration.
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-num">2</div>
+      <div>
+        <strong>Test deconvolution agreement first.</strong>
+        Run at least two independent methods (NNLS + scaden or equivalent). Do not proceed to single-method predictive modeling if top-10 median agreement is negative.
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-num">3</div>
+      <div>
+        <strong>Prefer abundant, stable targets over biologically specific ones.</strong>
+        Rare cell-type endpoints fail more often than broad module endpoints. If your primary target is rare, declare a fallback module-level target in advance.
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-num">4</div>
+      <div>
+        <strong>Define a fallback hypothesis for residual associations.</strong>
+        If the primary gate fails, residual associations (like H4b) are only interpretable if the target was pre-specified as a fallback. Do not retrofit post-hoc.
+      </div>
+    </div>
+
+    <div class="check-item">
+      <div class="check-num">5</div>
+      <div>
+        <strong>Report negative outcomes as first-class results.</strong>
+        A transparent METHOD-FRAGILE NEGATIVE is more useful to the field than an optimistic reframe of a failed primary gate. Document failure modes explicitly.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="fig-note">
+  <p>
+    <strong>Figure 4.</strong> Practitioner decision tree for atlas-guided radiogenomics. Five decision nodes define whether a study should continue to predictive evaluation, collapse to module-level targets, defer pending a larger cohort, or archive the line entirely. LEMPA encountered failure at Nodes 3 (G2 partial: NNLS-only consensus) and 5 (1/4 modules passed the pooled CV threshold), resulting in a METHOD-FRAGILE NEGATIVE line classification. The practitioner checklist summarizes five pre-analysis actions that reduce the risk of overclaiming and enable transparent negative-result reporting. H4b = hypothesis 4b (texture-versus-heterogeneity association). CV = cross-validation. FDR = Benjamini-Hochberg false discovery rate.
+  </p>
+</div>
+
+</body>
+</html>

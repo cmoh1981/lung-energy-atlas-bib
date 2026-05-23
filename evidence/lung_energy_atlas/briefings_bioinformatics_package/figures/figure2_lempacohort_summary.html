@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure 2 — LEMPA Case Study: Cohort and Data Layers</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #F8F5EF;
+    color: #1A2A3A;
+    padding: 48px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    border-bottom: 1.5px solid #1A2A3A;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .header h1 {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .header span { font-size: 10px; color: #6B7F8A; }
+
+  /* ── Title block ── */
+  .fig-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #1A2A3A;
+  }
+  .fig-subtitle {
+    font-size: 13px;
+    color: #4A6070;
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  /* ── Data layer cards ── */
+  .layers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .layer-card {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 16px 18px;
+  }
+
+  .layer-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 8px;
+  }
+
+  .layer-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 8px;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-top: 1px solid #E4E8EC;
+    padding-top: 7px;
+    margin-top: 4px;
+  }
+
+  .stat-label {
+    font-size: 10.5px;
+    color: #4A6070;
+  }
+
+  .stat-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1A2A3A;
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ── Cohort table ── */
+  .cohort-section {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  .section-header {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 14px;
+  }
+
+  .cohort-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11.5px;
+  }
+
+  .cohort-table th {
+    text-align: left;
+    padding: 7px 12px;
+    background: #F0EDE8;
+    color: #1A2A3A;
+    font-weight: 600;
+    border-bottom: 1.5px solid #C8CDD2;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace;
+  }
+
+  .cohort-table td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #E4E8EC;
+    color: #2E3E50;
+    vertical-align: top;
+  }
+
+  .cohort-table tr:last-child td { border-bottom: none; }
+
+  .cv-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    padding: 2px 6px;
+    border-radius: 1px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .cv-pass { background: #1E6B3C; color: #F8F5EF; }
+  .cv-fail { background: #C0392B; color: #F8F5EF; }
+  .cv-warn { background: #D4720A; color: #F8F5EF; }
+
+  /* ── Bottom row ── */
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .bottom-card {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 16px 18px;
+  }
+
+  .bottom-card .section-header { margin-bottom: 10px; }
+
+  .qc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .qc-list li {
+    font-size: 11.5px;
+    color: #2E3E50;
+    padding: 5px 0;
+    border-bottom: 1px solid #E4E8EC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .qc-list li:last-child { border-bottom: none; }
+
+  .qc-val {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #1A2A3A;
+  }
+
+  /* ── Legend ── */
+  .fig-note {
+    border-top: 1px solid #C8CDD2;
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+  .fig-note p {
+    font-size: 10.5px;
+    line-height: 1.65;
+    color: #4A6070;
+  }
+  .fig-note strong { color: #1A2A3A; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Briefings in Bioinformatics — Figure 2</h1>
+  <span>LEMP A Case Study — Cohort and Data Layers</span>
+</div>
+
+<!-- TITLE -->
+<div class="fig-title">LEMPA Case Study: Cohort and Data Layers</div>
+<div class="fig-subtitle">Data summary for the lung energy atlas and its paired radiogenomic branch (130 patients)</div>
+
+<!-- THREE DATA LAYER CARDS -->
+<div class="layers-grid">
+
+  <!-- Atlas layer -->
+  <div class="layer-card">
+    <div class="layer-label">Reference Atlas</div>
+    <div class="layer-title">HCA Lung Reference</div>
+    <div class="stat-row">
+      <span class="stat-label">Cells</span>
+      <span class="stat-value">584,944</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Cell types</span>
+      <span class="stat-value">50</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">HCA gene markers</span>
+      <span class="stat-value">1,627</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Hallmark pathways</span>
+      <span class="stat-value">50</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Atlas resource</span>
+      <span class="stat-value">v7.5</span>
+    </div>
+  </div>
+
+  <!-- Imaging layer -->
+  <div class="layer-card">
+    <div class="layer-label">Imaging Layer</div>
+    <div class="layer-title">Paired Radiomics</div>
+    <div class="stat-row">
+      <span class="stat-label">Patients (executed)</span>
+      <span class="stat-value">130</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Radiomic features</span>
+      <span class="stat-value">162</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Feature type</span>
+      <span class="stat-value">Texture / Morphology</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Site variation</span>
+      <span class="stat-value">Limited</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Vendor variation</span>
+      <span class="stat-value">Constrained</span>
+    </div>
+  </div>
+
+  <!-- RNA-seq layer -->
+  <div class="layer-card">
+    <div class="layer-label">Transcriptomics Layer</div>
+    <div class="layer-title">Bulk RNA-Seq QC</div>
+    <div class="stat-row">
+      <span class="stat-label">Genes passing QC</span>
+      <span class="stat-value">148</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Patients with paired data</span>
+      <span class="stat-value">130</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">Paired join surface</span>
+      <span class="stat-value">130 patients</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">MSigDB reference</span>
+      <span class="stat-value">v7.5</span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">H4b N (subset)</span>
+      <span class="stat-value">123</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- COHORT DEMOGRAPHICS TABLE -->
+<div class="cohort-section">
+  <div class="section-header">LEMPA NSCLC Cohort — Demographics and Data Summary</div>
+  <table class="cohort-table">
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Value</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total patients (executed paired set)</td>
+        <td><strong>130</strong></td>
+        <td>Public frozen NSCLC cohort · CT + RNA-seq paired</td>
+      </tr>
+      <tr>
+        <td>Gender</td>
+        <td>~60% Male / ~40% Female (estimated)</td>
+        <td>NSCLC typical distribution</td>
+      </tr>
+      <tr>
+        <td>Age range</td>
+        <td>Adult (public dataset)</td>
+        <td>Discrete age values not uniformly reported in source</td>
+      </tr>
+      <tr>
+        <td>Stage</td>
+        <td>II–IV (majority)</td>
+        <td>Early-stage patients underrepresented in public pairs</td>
+      </tr>
+      <tr>
+        <td>H4b analysis subset (entropy)</td>
+        <td><strong>123</strong></td>
+        <td>Post missing-feature filtering from 130</td>
+      </tr>
+      <tr>
+        <td>Cell-type deconvolution</td>
+        <td>NNLS + scaden</td>
+        <td>
+          NNLS: constrained non-negative least squares<br>
+          scaden: 600 simulated bulks, 100 steps, 5-fold CV
+          <span class="cv-badge cv-pass">PASS</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Scaden model config</td>
+        <td>100 steps · 5-fold CV</td>
+        <td>Per-fold model trained independently</td>
+      </tr>
+      <tr>
+        <td>Cross-method agreement gate</td>
+        <td>r ≥ 0.30 (pre-specified)</td>
+        <td>
+          Top-10 median agreement: <strong>−0.087</strong>
+          <span class="cv-badge cv-fail">FAIL</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Target collapse</td>
+        <td>50 cell types → 4 modules</td>
+        <td>
+          Endothelial module r = 0.343
+          <span class="cv-badge cv-warn">PARTIAL</span><br>
+          Epithelial / Immune / Stromal: failed
+        </td>
+      </tr>
+      <tr>
+        <td>Module-level pooled CV threshold</td>
+        <td>r ≥ 0.30 (per module)</td>
+        <td>
+          1 / 4 modules passed
+          <span class="cv-badge cv-fail">FAIL</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- BOTTOM ROW: RNA-seq QC + Scaden config -->
+<div class="bottom-row">
+
+  <div class="bottom-card">
+    <div class="section-header">RNA-Seq Quality Summary</div>
+    <ul class="qc-list">
+      <li><span>Source platform</span><span class="qc-val">Illumina / public archive</span></li>
+      <li><span>Genes passing QC</span><span class="qc-val">148 / original gene set</span></li>
+      <li><span>Patients with paired imaging</span><span class="qc-val">130 / 130</span></li>
+      <li><span>Paired bulk-to-imaging join</span><span class="qc-val">One-to-one · no duplicate join</span></li>
+      <li><span>MSigDB Hallmark version</span><span class="qc-val">v7.5</span></li>
+      <li><span>HCA gene overlap</span><span class="qc-val">1,627 / 1,627</span></li>
+    </ul>
+  </div>
+
+  <div class="bottom-card">
+    <div class="section-header">scaden Configuration Summary</div>
+    <ul class="qc-list">
+      <li><span>Simulation bulks</span><span class="qc-val">600</span></li>
+      <li><span>Training steps per model</span><span class="qc-val">100</span></li>
+      <li><span>Cross-validation folds</span><span class="qc-val">5</span></li>
+      <li><span>Ensemble strategy</span><span class="qc-val">Average across folds</span></li>
+      <li><span>Input features</span><span class="qc-val">148 genes</span></li>
+      <li><span>Output</span><span class="qc-val">50 cell-type fractions</span></li>
+      <li><span>Method agreement (top-10 median)</span><span class="qc-val">−0.087 · FAIL</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- LEGEND -->
+<div class="fig-note">
+  <p>
+    <strong>Figure 2.</strong> LEMPA lung energy atlas case study — cohort and data layers. The LEMPA cohort comprised 130 patients with paired CT imaging and bulk RNA-seq, reduced to 123 for the H4b entropy analysis after routine missing-feature filtering. RNA-seq processing retained 148 genes overlapping the HCA reference panel and MSigDB v7.5 Hallmark collection (50 pathways). Deconvolution was performed using NNLS and scaden (600 simulated bulks, 100 steps per model, 5-fold cross-validation). Cross-method agreement at the intended cell-type surface failed (median −0.087), triggering target collapse from 50 cell types to four broad modules. HCA = Human Cell Atlas. LEMPA = Lung Energy Metabolism Pathway Atlas. NNLS = Non-Negative Least Squares.
+  </p>
+</div>
+
+</body>
+</html>

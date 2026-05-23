@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+title: "Atlas-Guided Radiogenomics Requires Staged Validation"
+message: "If you use this repository, please cite the associated Briefings in Bioinformatics manuscript and the archived release."
+type: software
+authors:
+  - family-names: "Placeholder"
+    given-names: "Author Team"
+repository-code: "https://github.com/cmoh1981/lung-energy-atlas-bib"
+license: "MIT"

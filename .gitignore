@@ -1,0 +1,39 @@
+.omx/
+
+# Python and notebook noise
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# OS / editor artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large generated artifacts and local scratch outputs
+evidence/beta_cell/
+evidence/lung_energy_atlas/results_v2/scaden_scale_up_smoke_work/
+evidence/lung_energy_atlas/results_deconvolution/scaden_work/
+evidence/lung_energy_atlas/results_02_pathway_capacity/null_validation/
+evidence/lung_energy_atlas/results_v2/scaden_scale_up_smoke_predictions.csv
+evidence/lung_energy_atlas/results_v2/nsclc130_consensus_v2.csv
+evidence/lung_energy_atlas/results_v2/nsclc130_scaden_fractions.csv
+evidence/lung_energy_atlas/results_v2/cell_type_abundance.csv
+evidence/lung_energy_atlas/results_deconvolution/nsclc130_cell_fractions_scaden.csv
+evidence/lung_energy_atlas/results_deconvolution/nsclc130_cell_fractions_nnls.csv
+evidence/lung_energy_atlas/results_deconvolution/nsclc130_consensus.csv
+evidence/lung_energy_atlas/results_deconvolution/method_agreement.csv
+evidence/lung_energy_atlas/results_deconvolution/method_agreement_top6.pdf
+evidence/lung_energy_atlas/results_radiomics/nsclc211_features.csv
+evidence/lung_energy_atlas/results_radiomics/nsclc211_features_qc.csv
+evidence/lung_energy_atlas/results_radiomics/nsclc211_failures.csv
+
+# Binary data not intended for the submission repo
+*.h5ad
+*.npy
+*.h5
+
+# Generated office outputs
+submission_package/tables/BIB_publication_tables.docx

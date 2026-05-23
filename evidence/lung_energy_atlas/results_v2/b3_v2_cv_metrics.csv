@@ -1,0 +1,9 @@
+cell_type,tier,model,n,pooled_pearson_r,pooled_p,loso_pearson_r_mean,loso_pearson_r_sd,lobo_pearson_r_mean,pass_C2_endpoint,pass_C4_robustness,g5_status
+endothelial,primary,ElasticNet,130,0.31214929663493424,0.0002998302411273901,,,,True,,OMITTED_SF_INFEASIBLE
+endothelial,primary,RandomForest,130,0.34346806915606715,6.314875428736657e-05,,,,True,,OMITTED_SF_INFEASIBLE
+epithelial,primary,ElasticNet,130,0.08172585724212984,0.3552958332533139,,,,False,,OMITTED_SF_INFEASIBLE
+epithelial,primary,RandomForest,130,0.2681126177550565,0.00204169018876216,,,,False,,OMITTED_SF_INFEASIBLE
+immune,primary,ElasticNet,130,0.009131235798079557,0.9178766874866022,,,,False,,OMITTED_SF_INFEASIBLE
+immune,primary,RandomForest,130,0.15377346112454499,0.08067923353689208,,,,False,,OMITTED_SF_INFEASIBLE
+stromal,primary,ElasticNet,130,0.0711802293929832,0.4209567011320386,,,,False,,OMITTED_SF_INFEASIBLE
+stromal,primary,RandomForest,130,0.17291603015107632,0.04914283580145074,,,,False,,OMITTED_SF_INFEASIBLE

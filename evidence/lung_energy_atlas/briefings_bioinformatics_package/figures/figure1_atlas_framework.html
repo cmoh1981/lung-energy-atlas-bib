@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure 1 — Atlas-guided radiogenomics validation framework</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #F8F5EF;
+    color: #1A2A3A;
+    padding: 48px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ── Header band ── */
+  .header {
+    border-bottom: 1.5px solid #1A2A3A;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .header h1 {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #1A2A3A;
+  }
+  .header span {
+    font-size: 10px;
+    color: #6B7F8A;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Main title ── */
+  .fig-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 6px;
+    color: #1A2A3A;
+  }
+  .fig-subtitle {
+    font-size: 13px;
+    color: #4A6070;
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  /* ── Framework grid ── */
+  .framework {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .card {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 18px 20px;
+    position: relative;
+  }
+
+  .card-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    margin-bottom: 8px;
+    font-family: 'Courier New', monospace;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 6px;
+  }
+
+  .card-body {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #2E3E50;
+  }
+
+  .card-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .card-body li {
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+
+  .card-body li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #7A9BB5;
+  }
+
+  .card .badge {
+    display: inline-block;
+    font-size: 9px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 1px;
+    margin-top: 8px;
+  }
+
+  .badge-blue   { background: #1A2A3A; color: #F8F5EF; }
+  .badge-slate  { background: #7A9BB5; color: #F8F5EF; }
+  .badge-red    { background: #C0392B; color: #F8F5EF; }
+  .badge-amber  { background: #D4720A; color: #F8F5EF; }
+  .badge-green  { background: #1E6B3C; color: #F8F5EF; }
+
+  /* ── Two parallel arms ── */
+  .arms-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .arm-card {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 16px 20px;
+  }
+
+  .arm-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 8px;
+  }
+
+  .arm-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 6px;
+  }
+
+  .arm-body {
+    font-size: 11.5px;
+    color: #2E3E50;
+    line-height: 1.55;
+  }
+
+  /* ── Three stratification attempts ── */
+  .strat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .strat-card {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 2px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .strat-label {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 6px;
+  }
+
+  .strat-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 6px;
+  }
+
+  .strat-outcome {
+    font-size: 10.5px;
+    font-family: 'Courier New', monospace;
+    padding: 3px 8px;
+    border-radius: 1px;
+    display: inline-block;
+  }
+
+  .fail-tag   { background: #C0392B; color: #F8F5EF; }
+  .partial-tag { background: #D4720A; color: #F8F5EF; }
+  .pass-tag   { background: #1E6B3C; color: #F8F5EF; }
+
+  /* ── Failure cascade ── */
+  .cascade {
+    background: #F8F5EF;
+    border: 1.5px solid #1A2A3A;
+    border-radius: 2px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+  }
+
+  .cascade-header {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 12px;
+  }
+
+  .cascade-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .gate {
+    background: #FFFFFF;
+    border: 1px solid #C8CDD2;
+    border-radius: 1px;
+    padding: 10px 14px;
+    min-width: 130px;
+    max-width: 200px;
+    text-align: center;
+  }
+
+  .gate-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8A9EAF;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 4px;
+  }
+
+  .gate-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1A2A3A;
+    margin-bottom: 4px;
+  }
+
+  .gate-val {
+    font-size: 10px;
+    color: #4A6070;
+    font-family: 'Courier New', monospace;
+  }
+
+  .arrow {
+    font-size: 18px;
+    color: #7A9BB5;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  .arrow-down {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    color: #7A9BB5;
+    margin: 4px 0;
+  }
+
+  .result-box {
+    background: #1A2A3A;
+    color: #F8F5EF;
+    padding: 12px 18px;
+    border-radius: 1px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: center;
+    min-width: 200px;
+  }
+
+  .result-box .sub {
+    font-size: 9.5px;
+    font-weight: 400;
+    color: #A8BCC9;
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Legend / bottom note ── */
+  .fig-note {
+    border-top: 1px solid #C8CDD2;
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+
+  .fig-note p {
+    font-size: 10.5px;
+    line-height: 1.65;
+    color: #4A6070;
+  }
+
+  .fig-note strong {
+    color: #1A2A3A;
+    font-weight: 600;
+  }
+
+  .hca-tag { color: #1A4880; font-weight: 600; }
+  .nsclc-tag { color: #6B3A10; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Briefings in Bioinformatics — Figure 1</h1>
+  <span>LEMP A Atlas-guided Radiogenomics Validation</span>
+</div>
+
+<!-- TITLE -->
+<div class="fig-title">Atlas-Guided Radiogenomics Validation Framework</div>
+<div class="fig-subtitle">Staged gates from reference atlas to patient-level radiogenomic evaluation — with legitimate failure endpoints</div>
+
+<!-- COHORT & ATLAS CARDS -->
+<div class="framework">
+
+  <!-- Atlas layer -->
+  <div class="card">
+    <div class="card-label">Reference Layer</div>
+    <div class="card-title">HCA Lung Reference Map</div>
+    <div class="card-body">
+      <ul>
+        <li>584,944 cells from healthy lung</li>
+        <li>50 annotated cell types</li>
+        <li>1,627 HCA gene markers</li>
+        <li>Hallmark pathway coverage (v7.5)</li>
+        <li>Single-cell RNA-seq resolution</li>
+      </ul>
+      <span class="badge badge-blue">ATLAS LAYER</span>
+    </div>
+  </div>
+
+  <!-- Application layer -->
+  <div class="card">
+    <div class="card-label">Application Layer</div>
+    <div class="card-title">LEMPA Paired NSCLC Cohort</div>
+    <div class="card-body">
+      <ul>
+        <li>130 patients with paired RNA-seq + imaging</li>
+        <li>162 radiomic features extracted</li>
+        <li>148 genes passing QC after join</li>
+        <li>Public frozen data — no held-out replication set</li>
+        <li>Site / vendor variation limited</li>
+      </ul>
+      <span class="badge badge-slate">APPLICATION LAYER</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- TWO PARALLEL ARMS -->
+<div class="arms-row">
+  <div class="arm-card">
+    <div class="arm-label">Deconvolution Arm A</div>
+    <div class="arm-title">NNLS (Non-Negative Least Squares)</div>
+    <div class="arm-body">
+      Linear unmixing against HCA cell-type signatures. Constrained to non-negative fractions. Direct coefficient estimation per bulk sample.
+    </div>
+  </div>
+  <div class="arm-card">
+    <div class="arm-label">Deconvolution Arm B</div>
+    <div class="arm-title">scaden (Deep Learning Deconvolution)</div>
+    <div class="arm-body">
+      600 simulated bulks · 100 steps per model · 5-fold cross-validation. Ensemble-averaged cell-type fractions from trained neural network.
+    </div>
+  </div>
+</div>
+
+<!-- THREE STRATIFICATION ATTEMPTS -->
+<div class="strat-row">
+
+  <div class="strat-card">
+    <div class="strat-label">Stratification A</div>
+    <div class="strat-name">By H4 subgroups</div>
+    <span class="strat-outcome fail-tag">G5 FAIL</span>
+    <div class="card-body" style="font-size:10.5px;margin-top:6px;">
+      Pre-specified gate: r ≥ 0.30<br>
+      3 / 50 cell types passed
+    </div>
+  </div>
+
+  <div class="strat-card">
+    <div class="strat-label">Stratification B</div>
+    <div class="strat-name">By radiomic cluster</div>
+    <span class="strat-outcome partial-tag">G2 PARTIAL</span>
+    <div class="card-body" style="font-size:10.5px;margin-top:6px;">
+      NNLS-only consensus.<br>
+      Insufficient for cross-method comparison
+    </div>
+  </div>
+
+  <div class="strat-card">
+    <div class="strat-label">Stratification C</div>
+    <div class="strat-name">By pathway module</div>
+    <span class="strat-outcome fail-tag">B3 COLLAPSE</span>
+    <div class="card-body" style="font-size:10.5px;margin-top:6px;">
+      50 cell types → 4 modules<br>
+      Endothelial passes (r=0.343)<br>
+      Epithelial / Immune / Stromal fail
+    </div>
+  </div>
+
+</div>
+
+<!-- FAILURE-MODE CASCADE -->
+<div class="cascade">
+  <div class="cascade-header">Failure-Mode Cascade (V2 redesign)</div>
+  <div class="cascade-flow">
+
+    <div class="gate">
+      <div class="gate-label">Gate 2</div>
+      <div class="gate-name">G2 Partial</div>
+      <div class="gate-val">NNLS-only consensus</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="gate">
+      <div class="gate-label">Gate 5</div>
+      <div class="gate-name">G5 Fail</div>
+      <div class="gate-val">r ≥ 0.30 gate failed<br>3 / 50 cell types</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="gate">
+      <div class="gate-label">B3 Collapse</div>
+      <div class="gate-name">50 → 4 modules</div>
+      <div class="gate-val">Target fidelity lost</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="gate">
+      <div class="gate-label">Module CV</div>
+      <div class="gate-name">1 / 4 pass</div>
+      <div class="gate-val">Pooled threshold missed</div>
+    </div>
+
+    <span class="arrow">→</span>
+
+    <div class="result-box">
+      V2 METHOD-FRAGILE<br>NEGATIVE
+      <div class="sub">Fallback H4b survives · line-level negative stands</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="fig-note">
+  <p>
+    <strong>Figure 1.</strong> Atlas-guided radiogenomics validation framework. The workflow proceeds from a reference cell atlas (HCA Lung, 584,944 cells, 50 cell types, 1,627 markers) through two parallel deconvolution arms (NNLS and scaden) to three stratification designs. All three stratification attempts encountered failure or partial failure, triggering the cascade G2 partial → G5 fail → B3 module collapse → V2 METHOD-FRAGILE NEGATIVE. Endpoints marked with borders are legitimate scientific conclusions, not execution failures. HCA = Human Cell Atlas. LEMPA = Lung Energy Metabolism Pathway Atlas. NNLS = Non-Negative Least Squares.
+  </p>
+</div>
+
+</body>
+</html>
