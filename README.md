@@ -4,6 +4,8 @@ Submission-oriented repository for the *Briefings in Bioinformatics* manuscript:
 
 `Atlas-Guided Radiogenomics Requires Staged Validation: A Bioinformatics Failure-Mode Framework Anchored by the Lung Energy Metabolism Pathway Atlas`
 
+Repository URL: `https://github.com/cmoh1981/lung-energy-atlas-bib`
+
 ## What this repository contains
 
 - `submission_package/`
@@ -52,7 +54,13 @@ This repository is organized around the executed submission package and the evid
 
 Access to those resources should follow their original licenses, terms, and data-use agreements.
 
-## Status
+## Archive status
 
-This repository is prepared as a submission-facing code and materials package for *Briefings in Bioinformatics*. Final archive DOI, preregistration identifier, and author metadata remain to be populated in the manuscript before journal submission.
+This repository is prepared as a submission-facing code and materials package for *Briefings in Bioinformatics*. It is live on GitHub for review and code availability. The following archival items are still pending:
 
+- Zenodo-backed frozen release DOI
+- final author metadata for software citation
+- final preregistration identifier in manuscript-facing metadata
+- final environment / container archival pass
+
+See `docs/ARCHIVE_PREP.md` for the immediate release checklist.

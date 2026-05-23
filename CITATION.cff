@@ -6,4 +6,6 @@ authors:
   - family-names: "Placeholder"
     given-names: "Author Team"
 repository-code: "https://github.com/cmoh1981/lung-energy-atlas-bib"
+url: "https://github.com/cmoh1981/lung-energy-atlas-bib"
+abstract: "Submission-oriented code and materials package for a Briefings in Bioinformatics manuscript on staged validation in atlas-guided radiogenomics."
 license: "MIT"

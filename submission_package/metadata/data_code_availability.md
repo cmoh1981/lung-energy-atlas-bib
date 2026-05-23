@@ -37,8 +37,8 @@ Single-cell transcriptomic deconvolution was performed using the **Human Cell At
 
 The **LEMPA pipeline** is publicly available to maximize reproducibility:
 
-**Repository**: `https://github.com/[institution]/lung-energy-atlas`  
-**Documentation**: `https://[institution].github.io/lung-energy-atlas/` (TBD_PLACEHOLDER)  
+**Repository**: `https://github.com/cmoh1981/lung-energy-atlas-bib`  
+**Documentation**: repository README and submission package documentation in the GitHub repository  
 **Archived release**: Zenodo DOI `10.5281/zenodo.XXXXXXX` (TBD_PLACEHOLDER)
 
 ### Repository Structure
@@ -98,7 +98,7 @@ To ensure full reproducibility, the following artifacts are provided:
 
 | Artifact | Status | Location |
 |----------|--------|----------|
-| Analysis code (GitHub) | TBD_PLACEHOLDER | `https://github.com/[institution]/lung-energy-atlas` |
+| Analysis code (GitHub) | AVAILABLE | `https://github.com/cmoh1981/lung-energy-atlas-bib` |
 | Conda environment lock | TBD_PLACEHOLDER | `environment.yml` |
 | Docker image | TBD_PLACEHOLDER | `DOI: 10.5281/zenodo.XXXXXXX` |
 | Pre-registration record | TBD_PLACEHOLDER | OSF `https://osf.io/XXXXX` |

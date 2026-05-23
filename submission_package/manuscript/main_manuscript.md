@@ -159,7 +159,7 @@ Each gate in Section 2 was scored against frozen evidence files. Gate decisions 
 
 ### 3.7 Computing environment
 
-Analyses ran on a single workstation with Python ??.9, SciPy [28], scikit-learn [29], Scanpy [24], and `gseapy`. Software versions are listed in `environment.yml` in the public code repository (URL PLACEHOLDER). A Docker container with the exact pinned versions is archived at `Zenodo DOI PLACEHOLDER`. Random seeds for cross-validation folds and for the Scaden ensemble are listed in `docs/random_seeds.md`. The R-based GSVA path was not available in this environment; ssGSEA was substituted as described in Section 3.4.
+Analyses ran on a single workstation with Python ??.9, SciPy [28], scikit-learn [29], Scanpy [24], and `gseapy`. The public submission repository is `https://github.com/cmoh1981/lung-energy-atlas-bib`; final frozen environment locks and any container artifact will be attached to the archived release before submission. Random seeds for cross-validation folds and for the Scaden ensemble will be included with that archival release. The R-based GSVA path was not available in this environment; ssGSEA was substituted as described in Section 3.4.
 
 ---
 
@@ -372,13 +372,13 @@ STROBE [10] and TRIPOD [11] mapping for this manuscript is provided in `suppleme
 
 This manuscript reports a paired analysis on the NSCLC-Radiogenomics collection [7] hosted on TCIA [19]. Imaging and clinical metadata are available through the TCIA portal under the original collection's data-use agreement. The Human Lung Cell Atlas [3] is accessed through the Human Cell Atlas portal [1].
 
-The LEMPA analysis pipeline (code) and the executed environment (Docker/Conda lock) are intended to be archived as follows; the identifiers below are PLACEHOLDERS that must be supplied by the corresponding author before submission and are listed here so reviewers can verify their presence at production time:
+The LEMPA analysis pipeline (code) and the executed environment (Docker/Conda lock) are intended to be archived as follows; the identifiers below remain incomplete only where a frozen archival identifier must be minted before submission:
 
-- **Code repository:** `[github.com/PLACEHOLDER/lung-energy-atlas]` (URL PLACEHOLDER).
+- **Code repository:** `https://github.com/cmoh1981/lung-energy-atlas-bib`.
 - **Archived release:** Zenodo DOI `10.5281/zenodo.PLACEHOLDER`.
 - **Preregistration:** OSF accession `[osf.io/PLACEHOLDER]`.
 - **Processed result tables:** included as Supplementary Data S1?밪5 at the journal portal (V1 cell-type CV metrics; V2 NNLS?밪caden agreement; V2 module-level CV metrics; H4b cross-version comparison; reporting-compliance mapping).
-- **Software environment:** `environment.yml` and `Dockerfile` in the repository; random seeds documented in `docs/random_seeds.md`.
+- **Software environment:** final `environment.yml`, `Dockerfile`, and seed documentation will be attached to the archived release before submission.
 
 Raw imaging data are subject to the NSCLC-Radiogenomics and TCIA data-use agreements and are not redistributed in this manuscript or its supplement.
 
