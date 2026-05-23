@@ -1,0 +1,23 @@
+{
+  "title": "Atlas-Guided Radiogenomics Requires Staged Validation",
+  "description": "Submission-oriented code and materials package for the Briefings in Bioinformatics manuscript 'Atlas-Guided Radiogenomics Requires Staged Validation: A Bioinformatics Failure-Mode Framework Anchored by the Lung Energy Metabolism Pathway Atlas'. This repository contains the current submission package, curated evidence summaries, and BIB-focused drafting assets. Final author metadata and archival DOI fields must be completed before journal submission.",
+  "upload_type": "software",
+  "publication_type": "other",
+  "creators": [
+    {
+      "name": "Placeholder, Author Team",
+      "affiliation": "To be completed before submission"
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "radiogenomics",
+    "single-cell atlas",
+    "lung cancer",
+    "computational biology",
+    "validation framework",
+    "Briefings in Bioinformatics"
+  ],
+  "notes": "Zenodo metadata file for GitHub release archiving. If this file and CITATION.cff are both present, Zenodo will use this file as the release metadata source."
+}
