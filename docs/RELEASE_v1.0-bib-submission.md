@@ -1,4 +1,4 @@
-# v1.0-bib-submission
+# v1.0.1-bib-submission
 
 Submission snapshot for the *Briefings in Bioinformatics* manuscript:
 
@@ -10,6 +10,7 @@ Submission snapshot for the *Briefings in Bioinformatics* manuscript:
 - BIB-oriented drafting package
 - curated evidence summaries supporting the manuscript's gate classifications
 - manuscript-facing metadata updated to the live GitHub repository URL
+- `.zenodo.json` metadata added for Zenodo/GitHub archiving
 
 ## Still pending before journal submission
 
